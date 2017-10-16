@@ -1,9 +1,6 @@
-
-#python 3 example
 import itertools
 import collections
 import ipaddress
-from IPython import embed
 import unittest
 
 FS_component = collections.namedtuple('FS_component', 'component_type value')
@@ -209,17 +206,6 @@ class TestFlowCmp(unittest.TestCase):
         a, b = b, a
         self.assertEqual(flow_rule_cmp(a, b), B_HAS_PRECEDENCE)
 
-a = """
-        10.0.0.0/8 10.1.0.0/16
-        common = 8
-        10/8, 10/8 == equal -> longest match has preference
-        = 10.1.0.0/16
-
-        10.0.0.0/8 11.0.1.0/16
-        common = 8
-        10/8, 11/8 == neq -> lowest value hat preference
-        = 10.0.0.0/8
-"""
 
 if __name__ == '__main__':
     unittest.main()
