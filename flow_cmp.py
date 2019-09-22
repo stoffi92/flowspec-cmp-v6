@@ -1,3 +1,14 @@
+"""
+Copyright (c) 2019 IETF Trust and the persons identified as authors
+of draft-ietf-idr-rfc5575bis. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without
+modification, is permitted pursuant to, and subject to the license
+terms contained in, the Simplified BSD License set forth in Section
+4.c of the IETF Trust’s Legal Provisions Relating to IETF Documents
+(http://trustee.ietf.org/license-info).
+"""
+
 import itertools
 import collections
 import ipaddress
