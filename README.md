@@ -4,10 +4,10 @@ Any edit, commit, pull request, issue, comment or other change made to this repo
 
 You agree to comply with all applicable IETF policies and procedures, including, BCP 78, 79, the TLP, and the TLP rules regarding code components (e.g. being subject to a Simplified BSD License) in Contributions.
 
-# flowspec-cmp
+# flowspec-cmp-v6
 
-The demo implementation of the flowspec sorting algorithm can be found in
-[flow_cmp.py](flow_cmp.py) flow_rule_cmp(a, b). (Tested with Python 3.6.3)
+The demo implementation of the IPv6 flowspec sorting algorithm can be found in
+[flow_cmp_v6.py](flow_cmp_v6.py) flow_rule_cmp(a, b). (Tested with Python 3.6.3)
 
 The unittest [test.py](test.py) can be run as follows:
 
