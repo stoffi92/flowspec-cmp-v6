@@ -1,6 +1,6 @@
 """
 Copyright (c) 2019 IETF Trust and the persons identified as authors
-of draft-ietf-idr-rfc5575bis. All rights reserved.
+of draft-ietf-idr-flow-spec-v6. All rights reserved.
 
 Redistribution and use in source and binary forms, with or without
 modification, is permitted pursuant to, and subject to the license
@@ -21,6 +21,19 @@ IP_DESTINATION = 1
 IP_SOURCE = 2
 
 FS_component = collections.namedtuple('FS_component', 'component_type value')
+
+
+class FS_IPv6_prefix_component:
+    def __init__(self, prefix, offset=0, component_type=IP_DESTINATION):
+        self.offset = offset
+        self.component_type = component_type
+        # make sure if offset != 0 that non of the first offset bits
+        # are set in the prefix
+        self.value = prefix
+        if offset != 0:
+            i = ipaddress.IPv6Interface((self.value.network_address, offset))
+            if i.network.network_address != ipaddress.ip_address('0::0'):
+                raise ValueError('Bits set in the offset')
 
 
 class FS_nlri(object):
@@ -56,9 +69,9 @@ class FS_nlri(object):
             return False
 
 
-def flow_rule_cmp(a, b):
+def flow_rule_cmp_v6(a, b):
     """
-    Implementation of the flowspec sorting algorithm in draft-ietf-idr-rfc5575bis-04.
+    Implementation of the flowspec sorting algorithm in draft-ietf-idr-flow-spec-v6.
     """
     for comp_a, comp_b in itertools.zip_longest(a.components,
                                            b.components):
@@ -75,7 +88,15 @@ def flow_rule_cmp(a, b):
             return B_HAS_PRECEDENCE
         # component types are equal -> type specific comparison
         if comp_a.component_type in (IP_DESTINATION, IP_SOURCE):
-            # assuming comp_a.value, comp_b.value of type ipaddress
+            if comp_a.offset < comp_b.offset:
+                return A_HAS_PRECEDENCE
+            if comp_a.offset < comp_b.offset:
+                return B_HAS_PRECEDENCE
+            # both components have the same offset
+            # assuming comp_a.value, comp_b.value of type
+            # ipaddress.IPv6Network
+            # and the offset bits are reset to 0 (since they are not
+            # represented in the NLRI)
             if comp_a.value.overlaps(comp_b.value):
                 # longest prefixlen has precedence
                 if comp_a.value.prefixlen > comp_b.value.prefixlen:
